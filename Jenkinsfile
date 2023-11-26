@@ -8,13 +8,15 @@ pipeline {
         }
         stage('Build and Push') {
             steps {
-                def dockerImage = "aryansr/nodejs-2"
-                def dockerTag = "v2"
-                def dockerCredentialsId = "dockerhub_credentials"
+                script {
+                    def dockerImage = "aryansr/nodejs-2"
+                    def dockerTag = "v2"
+                    def dockerCredentialsId = "dockerhub_credentials"
 
-                def dockerBuild = docker.build("${dockerImage}:${dockerTag}",".")
-                docker.withRegistry('', dockerCredentialsId) {
-                    dockerBuild.push()
+                    def dockerBuild = docker.build("${dockerImage}:${dockerTag}",".")
+                    docker.withRegistry('', dockerCredentialsId) {
+                        dockerBuild.push()
+                    }
                 }
             }
         }
