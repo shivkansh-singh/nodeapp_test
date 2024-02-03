@@ -1,23 +1,38 @@
 pipeline {
+    environment {
+        dockerimagename = "aryansr/nodeapp"
+        dockerImage = ""
+        registryCredentials = "hub_creds"
+    }
     agent any
+
     stages {
-        stage('Go to Git') {
+        stage("Checkout Git") {
             steps {
-                checkout scm
+                git "https://github.com/arytmw/nodeapp_test.git"
             }
         }
-        stage('Build and Push') {
+        stage("Build Image") {
             steps {
                 script {
-                    def dockerImage = "aryansr/nodejs-2"
-                    def dockerTag = "v2"
-                    def dockerCredentialsId = "dockerhub_credentials"
-
-                    def dockerBuild = docker.build("${dockerImage}:${dockerTag}",".")
-                    docker.withRegistry('', dockerCredentialsId) {
-                        dockerBuild.push()
+                    dockerImage = docker.build dockerimagename
+                }
+            }
+        }
+        stage("Push Image") {
+            steps {
+                script {
+                    docker.withRegistry("", registryCredentials) {
+                        dockerImage.push("latest")
                     }
                 }
+            }
+        }
+        stage("Deploy to Kubernetes") {
+            steps {
+             withKubeConfig([credentialsId: 'networknuts-k8s', serverUrl: 'https://networknutsk8s-dns-kvp2667g.hcp.centralindia.azmk8s.io']) {
+                sh "kubectl apply -f deploymentservice.yml"
+             }
             }
         }
     }
