@@ -30,7 +30,7 @@ pipeline {
         }
         stage("Deploy to Kubernetes") {
             steps {
-             withKubeConfig([credentialsId: 'k8s-creds-2', serverUrl: 'https://networknutsk8s-dns-kvp2667g.hcp.centralindia.azmk8s.io']) {
+             withKubeConfig([credentialsId: 'k8s-creds-2', serverUrl: 'https://10.0.0.100:6443']) {
                 sh "kubectl apply -f deploymentservice.yml"
              }
             }
