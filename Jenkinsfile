@@ -2,14 +2,14 @@ pipeline {
     environment {
         dockerimagename = "aryansr/nodeapp"
         dockerImage = ""
-        registryCredentials = "hub_creds"
+        registryCredentials = "dhub_creds"
     }
     agent any
 
     stages {
         stage("Checkout Git") {
             steps {
-                git "https://github.com/arytmw/nodeapp_test.git"
+                git "https://github.com/shivkansh-singh/nodeapp_test.git"
             }
         }
         stage("Build Image") {
