@@ -30,7 +30,7 @@ pipeline {
         }
         stage("Deploy to Kubernetes") {
             steps {
-             withKubeConfig([credentialsId: 'k8s-creds-2', serverUrl: 'https://10.0.0.100:6443']) {
+             withKubeConfig([credentialsId: 'k8s-creds-2', serverUrl: 'https://192.168.161.132:6443']) {
                 sh "kubectl apply -f deploymentservice.yml"
              }
             }
