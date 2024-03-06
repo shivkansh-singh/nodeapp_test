@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        dockerimagename = "aryansr/nodeapp"
+        dockerimagename = "shivkanshsingh/nodeapp"
         dockerImage = ""
         registryCredentials = "dhub_creds"
     }
